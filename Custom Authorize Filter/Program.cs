@@ -9,8 +9,11 @@ builder.Services.AddDbContextPool<CompanyContext>(
     );
 builder.Services.AddScoped<IProduct, ProductRepo>();
 builder.Services.AddScoped<IUser,UserRepo>();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
 
 var app = builder.Build();
+app.UseSession();
 app.MapControllerRoute(name:"area",pattern:"{area:exists}/{controller=UserHome}/{action=Index}");
 //app.MapDefaultControllerRoute();
 app.MapControllerRoute(name: "default", pattern: "{controller=ManageUsers}/{action=Login}");

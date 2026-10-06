@@ -27,6 +27,10 @@ namespace Custom_Authorize_Filter.Controllers
                 var res = await this.repo.Login(rec);
                 if (res.IsLoggedIn)
                 {
+                    HttpContext.Session.SetString("UserName", res.FullName);
+                    
+                    HttpContext.Session.SetString("UserID", res.LoggedInUserID.ToString());
+
                     return RedirectToAction("Index", "UserHome", new { area = "UserArea" });
                 }
                 else
@@ -54,6 +58,13 @@ namespace Custom_Authorize_Filter.Controllers
                 return RedirectToAction("Login");
             }
             return View(rec);
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
         }
     }
 }
